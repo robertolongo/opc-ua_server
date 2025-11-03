@@ -46,4 +46,4 @@ if __name__ == "__main__":
         Humidity_var.set_value(Humidity)
         Timestamp_var.set_value(Timestamp)
 
-        time.sleep(10)
+        time.sleep(30)

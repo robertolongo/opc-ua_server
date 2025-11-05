@@ -1,5 +1,6 @@
-from opcua import Client, ua
-import time
+from opcua import Client
+
+from opcua.common import node
 
 # Depth limit for recursive browsing (to prevent overload)
 MAX_DEPTH = 3
@@ -78,31 +79,56 @@ def connect_and_browse(url_server):
 
 
 def read_node(server_url, node_id):
-    client = Client(server_url)
-    client.connect()
-    print("Client connected")
+    client = None
+    node_value = None
+
+    try:
+        client = Client(server_url)
+        client.connect()
+        print("Client connected")
 
 
-    node = client.get_node(node_id)
-    node_value = node.get_value()
-    node_desc = node.get_description().Text
-    print("id:", node_id, " desc:", node_desc, " display name:", node.get_display_name().to_string(), " value:", node_value)
-    node.get_display_name()
+        node = client.get_node(node_id)
+        node_value = node.get_value()
+        node_desc = node.get_description().Text
+        print("id:", node_id, " desc:", node_desc, " display name:", node.get_display_name().to_string(), " value:", node_value)
+        node.get_display_name()
 
-    client.disconnect()
-    print("Client disconnected")
+    except ConnectionRefusedError:
+        print(f"❌ ERROR: Connection refused. Ensure the OPC UA server is running at {server_url}.")
+    except Exception as e:
+        print(f"❌ An error occurred: {e}")
+    finally:
+        # 3. Disconnection
+        if client:
+            client.disconnect()
+            print("\nDisconnected from the server.")
+
     return node_value
 
 def write_node(server_url, node_id, node_value):
-    client = Client(server_url)
-    client.connect()
-    print("Client connected")
+    client = None
 
-    node = client.get_node(node_id)
-    node.set_value(node_value)
+    try:
+        client = Client(server_url)
+        client.connect()
+        print("Client connected")
 
-    client.disconnect()
-    print("Client disconnected")
+        node = client.get_node(node_id)
+        node.set_value(node_value)
+
+    except ConnectionRefusedError:
+        print(f"❌ ERROR: Connection refused. Ensure the OPC UA server is running at {server_url}.")
+
+    except Exception as e:
+        print(f"❌ An error occurred: {e}")
+    finally:
+    # 3. Disconnection
+        if client:
+            client.disconnect()
+            print("\nDisconnected from the server.")
+
+
 
 
 def list_nodes(server_url):

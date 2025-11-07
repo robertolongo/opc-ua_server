@@ -1,6 +1,6 @@
 from opcua import Client
 
-from opcua.common import node
+# from opcua.common import node
 
 # Depth limit for recursive browsing (to prevent overload)
 MAX_DEPTH = 3
@@ -132,33 +132,43 @@ def write_node(server_url, node_id, node_value):
 
 
 def list_nodes(server_url):
-    client = Client(server_url)
-    client.connect()
-    print("Client connected")
+    client = None
+    try:
+        client = Client(server_url)
+        client.connect()
+        print("Client connected")
 
-    root = client.get_root_node()
-    objects_node = client.get_objects_node()
+        root = client.get_root_node()
+        objects_node = client.get_objects_node()
 
-    display_name_objects = objects_node.get_display_name().to_string()
-    print(f"**{display_name_objects}** ({objects_node.nodeid.to_string()})")
-
-
-    node_list = objects_node.get_children()
-    for node in node_list:
-        try:
-            node_id_str = node.nodeid.to_string()
-            # print(f"ID del Nodo: **{node_id_str}**")
-
-            display_name = node.get_display_name().to_string()
-            print(f" {display_name} ({node_id_str})")
+        display_name_objects = objects_node.get_display_name().to_string()
+        print(f"**{display_name_objects}** ({objects_node.nodeid.to_string()})")
 
 
-        except Exception as e:
-            print(f"Errore durante la ricerca del nodo per nome: {e}")
+        node_list = objects_node.get_children()
+        for node in node_list:
+            try:
+                node_id_str = node.nodeid.to_string()
+                # print(f"ID del Nodo: **{node_id_str}**")
+
+                display_name = node.get_display_name().to_string()
+                print(f" {display_name} ({node_id_str})")
 
 
-    client.disconnect()
-    print("Client disconnected")
+            except Exception as e:
+                print(f"Node not found: {e}")
+
+
+    except ConnectionRefusedError:
+        print(f"❌ ERROR: Connection refused. Ensure the OPC UA server is running at {server_url}.")
+
+    except Exception as e:
+        print(f"❌ An error occurred: {e}")
+    finally:
+    # 3. Disconnection
+        if client:
+            client.disconnect()
+            print("\nDisconnected from the server.")
 
 
 if __name__ == "__main__":

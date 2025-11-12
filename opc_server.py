@@ -1,15 +1,17 @@
+from logging import exception
+
 from opcua import Server
 import random
 import datetime
 import time
+import configparser
 
 
-
-def run_server(url, name, interval):
+def run_server(url, namespace, interval):
     # Server initialization
     server = Server()
     server.set_endpoint(url)
-    name_space = server.register_namespace(name)
+    name_space = server.register_namespace(namespace)
 
     # Adding nodes
     node = server.get_objects_node()
@@ -50,8 +52,25 @@ def run_server(url, name, interval):
 
 if __name__ == "__main__":
 
-    url = "opc.tcp://127.0.0.1:4840"
-    name = "OPC-UA_SERVER"
-    interval = 10
+    #url = "opc.tcp://127.0.0.1:4840"
+    #namespace = "OPC-UA_SERVER"
+    #interval = 10
 
-    run_server(url, name, interval)
+    url = ''
+    namespace = ''
+    interval = 0
+
+    config = configparser.ConfigParser()
+    try:
+        config.read('config.ini')
+        url = config.get('server', 'url')
+        namespace = config.get('server', 'namespace')
+        interval = int(config.get('settings', 'interval'))
+
+        configuration_loaded = True
+    except Exception as e:
+        configuration_loaded = False
+        print(f"Error reading config file: {e}")
+
+    if configuration_loaded:
+        run_server(url, namespace, interval)

@@ -79,13 +79,14 @@ def connect_and_browse(url_server):
 
 
 def read_node(server_url, node_id):
+    print("read_node")
     client = None
     node_value = None
 
     try:
         client = Client(server_url)
         client.connect()
-        print("Client connected")
+        #print("Client connected")
 
 
         node = client.get_node(node_id)
@@ -102,17 +103,18 @@ def read_node(server_url, node_id):
         # 3. Disconnection
         if client:
             client.disconnect()
-            print("\nDisconnected from the server.")
+            #print("\nDisconnected from the server.")
 
     return node_value
 
 def write_node(server_url, node_id, node_value):
+    print("write_node")
     client = None
 
     try:
         client = Client(server_url)
         client.connect()
-        print("Client connected")
+        #print("Client connected")
 
         node = client.get_node(node_id)
         node.set_value(node_value)
@@ -126,17 +128,18 @@ def write_node(server_url, node_id, node_value):
     # 3. Disconnection
         if client:
             client.disconnect()
-            print("\nDisconnected from the server.")
+            #print("\nDisconnected from the server.")
 
 
 
 
 def list_nodes(server_url):
+    print("list_nodes")
     client = None
     try:
         client = Client(server_url)
         client.connect()
-        print("Client connected")
+        #print("Client connected")
 
         root = client.get_root_node()
         objects_node = client.get_objects_node()
@@ -190,8 +193,8 @@ if __name__ == "__main__":
     print("new node_value:", node_value)
 
 
-    # list_nodes(url)
-    connect_and_browse(url)
+    list_nodes(url)
+    #connect_and_browse(url)
 
 
 

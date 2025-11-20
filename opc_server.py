@@ -18,6 +18,8 @@ def run_server(url, namespace, interval):
 
     parameters_object = node.add_object(name_space, "Parameters")
 
+    #parameters_object2 = parameters_object.add_object(name_space, "Parameters")
+
     temperature_var = parameters_object.add_variable(name_space, "Temperature", 0)
     pressure_var = parameters_object.add_variable(name_space, "Pressure", 0)
     humidity_var = parameters_object.add_variable(name_space, "Humidity", 0)

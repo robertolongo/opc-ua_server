@@ -22,6 +22,7 @@ def browse_and_print_nodes(node, depth=0):
             return
 
         for child in children:
+            indent = ''
             # Print basic node information
             try:
                 display_name = child.get_display_name().to_string()

@@ -1,5 +1,3 @@
-from logging import exception
-
 from opcua import Server
 import random
 import datetime
@@ -80,6 +78,7 @@ if __name__ == "__main__":
     url = ''
     namespace = ''
     interval = 0
+    real_var = ''
 
     config = configparser.ConfigParser()
     try:

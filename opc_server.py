@@ -22,6 +22,7 @@ def run_server(url, namespace, interval, real_var_list):
     pressure_var = parameters_object.add_variable(name_space, "Pressure", 0)
     humidity_var = parameters_object.add_variable(name_space, "Humidity", 0)
     timestamp_var = parameters_object.add_variable(name_space, "Timestamp", 0)
+    boolean_var = parameters_object.add_variable(name_space, "Boolean", True)
 
     print(temperature_var.nodeid.to_string())
     print(temperature_var.get_display_name().to_string())
@@ -32,6 +33,7 @@ def run_server(url, namespace, interval, real_var_list):
     pressure_var.set_writable()
     humidity_var.set_writable()
     timestamp_var.set_writable()
+    boolean_var.set_writable()
 
     variables = []
     for real_var in real_var_list:
@@ -62,6 +64,8 @@ def run_server(url, namespace, interval, real_var_list):
         pressure_var.set_value(pressure)
         humidity_var.set_value(humidity)
         timestamp_var.set_value(timestamp)
+        boolean_var.set_value(True)
+
 
         for real_var in variables:
             print(real_var.nodeid.to_string()," (",real_var.get_display_name().to_string(),"): ", real_var.get_value())

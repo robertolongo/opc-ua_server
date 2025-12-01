@@ -5,7 +5,7 @@ import time
 import configparser
 
 
-def run_server(url, namespace, interval, real_var_list):
+def run_server(url, namespace, interval, real_var_list, bool_var_list):
     # Server initialization
     server = Server()
     server.set_endpoint(url)
@@ -22,7 +22,7 @@ def run_server(url, namespace, interval, real_var_list):
     pressure_var = parameters_object.add_variable(name_space, "Pressure", 0)
     humidity_var = parameters_object.add_variable(name_space, "Humidity", 0)
     timestamp_var = parameters_object.add_variable(name_space, "Timestamp", 0)
-    boolean_var = parameters_object.add_variable(name_space, "Boolean", True)
+    boolean_var = parameters_object.add_variable(name_space, "Boolean", False)
 
     print(temperature_var.nodeid.to_string())
     print(temperature_var.get_display_name().to_string())
@@ -38,6 +38,11 @@ def run_server(url, namespace, interval, real_var_list):
     variables = []
     for real_var in real_var_list:
         variable_var = parameters_object.add_variable(name_space, real_var, 0)
+        variable_var.set_writable()
+        variables.append(variable_var)
+
+    for bool_var in bool_var_list:
+        variable_var = parameters_object.add_variable(name_space, bool_var, False)
         variable_var.set_writable()
         variables.append(variable_var)
 
@@ -83,6 +88,7 @@ if __name__ == "__main__":
     namespace = ''
     interval = 0
     real_var = ''
+    bool_var = ''
 
     config = configparser.ConfigParser()
     try:
@@ -91,6 +97,7 @@ if __name__ == "__main__":
         namespace = config.get('server', 'namespace')
         interval = int(config.get('settings', 'interval'))
         real_var = config.get('real_var', 'variables').split()
+        bool_var = config.get('bool_var', 'variables').split()
 
         configuration_loaded = True
     except Exception as e:
@@ -98,4 +105,4 @@ if __name__ == "__main__":
         print(f"Error reading config file: {e}")
 
     if configuration_loaded:
-        run_server(url, namespace, interval, real_var)
+        run_server(url, namespace, interval, real_var, bool_var)

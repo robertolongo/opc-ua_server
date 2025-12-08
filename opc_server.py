@@ -5,7 +5,7 @@ import time
 import configparser
 
 
-def run_server(url, namespace, interval, real_var_list, bool_var_list):
+def run_server(url, namespace, interval, real_var_list, real_var_ro_list, bool_var_list):
     # Server initialization
     server = Server()
     server.set_endpoint(url)
@@ -39,6 +39,11 @@ def run_server(url, namespace, interval, real_var_list, bool_var_list):
     for real_var in real_var_list:
         variable_var = parameters_object.add_variable(name_space, real_var, 0)
         variable_var.set_writable()
+        variables.append(variable_var)
+
+    for real_var_ro in real_var_ro_list:
+        variable_var = parameters_object.add_variable(name_space, real_var_ro, 0)
+        #variable_var.set_writable()
         variables.append(variable_var)
 
     for bool_var in bool_var_list:
@@ -88,6 +93,7 @@ if __name__ == "__main__":
     namespace = ''
     interval = 0
     real_var = ''
+    real_var_ro = ''
     bool_var = ''
 
     config = configparser.ConfigParser()
@@ -97,6 +103,7 @@ if __name__ == "__main__":
         namespace = config.get('server', 'namespace')
         interval = int(config.get('settings', 'interval'))
         real_var = config.get('real_var', 'variables').split()
+        real_var_ro = config.get('real_var_ro', 'variables').split()
         bool_var = config.get('bool_var', 'variables').split()
 
         configuration_loaded = True
@@ -105,4 +112,4 @@ if __name__ == "__main__":
         print(f"Error reading config file: {e}")
 
     if configuration_loaded:
-        run_server(url, namespace, interval, real_var, bool_var)
+        run_server(url, namespace, interval, real_var, real_var_ro, bool_var)

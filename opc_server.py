@@ -44,6 +44,7 @@ def run_server(url, namespace, interval, real_var_list, real_var_ro_list, bool_v
     for real_var_ro in real_var_ro_list:
         variable_var = parameters_object.add_variable(name_space, real_var_ro, 0)
         #variable_var.set_writable()
+        variable_var.set_value(random.uniform(10, 90))
         variables.append(variable_var)
 
     for bool_var in bool_var_list:
@@ -77,8 +78,8 @@ def run_server(url, namespace, interval, real_var_list, real_var_ro_list, bool_v
         boolean_var.set_value(True)
 
 
-        for real_var in variables:
-            print(real_var.nodeid.to_string()," (",real_var.get_display_name().to_string(),"): ", real_var.get_value())
+        for current_var in variables:
+            print(current_var.nodeid.to_string()," (",current_var.get_display_name().to_string(),"): ", current_var.get_value())
 
         time.sleep(interval)
 

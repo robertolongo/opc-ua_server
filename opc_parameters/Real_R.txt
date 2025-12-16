@@ -1,0 +1,6 @@
+"Static.VarFloat0";"TEST"
+"Static.VarFloat1";"TEST"
+"Static.VarFloat2";"TEST"
+"Static.VarFloat3";"TEST"
+"Static.VarFloat4";"TEST"
+"Static.VarFloat5";"TEST"

@@ -13,7 +13,7 @@ def get_variable_list(file_name):
         with open(file_name, 'r', encoding='utf-8') as file:
             # Create a CSV reader object, specifying the parameters:
             # delimiter = ';' (the field separator)
-            # quotechar = '"' (the character used to enclose values, especially if they contain the delimiter)
+            # quotechar = '"' (the character used to enclose values)
             csv_reader = csv.reader(file, delimiter=';', quotechar='"')
 
             for row in csv_reader:
